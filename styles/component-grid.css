@@ -1,0 +1,7 @@
+.image-grid .clear {
+  clear: both;
+}
+
+.image-grid {
+  border: 50px solid red;
+}

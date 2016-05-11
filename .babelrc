@@ -1,0 +1,8 @@
+{
+  "presets": [
+    "launchbadge-browser"
+  ],
+  "plugins": [
+    "transform-runtime"
+  ]
+}
