@@ -78,11 +78,7 @@ export default class ComponentGrid extends React.Component {
         margin-right: ${margin}px;
         margin-bottom: ${margin}px;
       }
-      [data-instance-id=\"${this.state.id}\"] > .component-grid-item::after {
-        content: '${count}';
-        width: 0px;
-        height: 0px;
-      }
+
       [data-instance-id=\"${this.state.id}\"] > .component-grid-item${nthChild} {
         margin-right: 0px;
       }
@@ -91,15 +87,20 @@ export default class ComponentGrid extends React.Component {
 
   componentDidMount() {
     this.setChildWidth();
+    // HACK: Doesn't work right on the first render, count ends up being 0
     this.setChildWidth();
 
+    // Want to resize our images whenever the window resizes
     window.addEventListener("resize", this.setChildWidth, false);
   }
 
+  // Make sure to unbind the event listener, horrible magical things will start
+  // to happen if I don't.
   componentWillUnmount() {
     window.removeEventListener("resize", this.setChildWidth, false);
   }
 
+  // Handle re-render
   componentDidUpdate() {
     this.setChildWidth();
   }
