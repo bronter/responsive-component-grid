@@ -2,23 +2,24 @@ import React from "react";
 import _ from "lodash";
 import cx from "classnames";
 import {autobind} from "core-decorators";
+import styles from "../styles/component-grid.css";
 
 class GridItem extends React.Component {
   render() {
     return (
-      <div className="image-grid-item">
+      <div className="component-grid-item">
         {this.props.children}
       </div>
     );
   }
 }
 
-export default class ImageGrid extends React.Component {
+export default class ComponentGrid extends React.Component {
   constructor() {
     super();
 
     // We use a unique id so that in css we can select only this instance
-    // of the image grid.
+    // of the component grid.
     this.state = {
       id: _.uniqueId(),
     };
@@ -34,44 +35,55 @@ export default class ImageGrid extends React.Component {
     margin: 25,
   };
 
-  // Calculate the width for images in the grid
+  // Calculate the width for components in the grid
   @autobind
-  setImageWidth() {
-    // Need the width of the container to see how many images can fit inside of it.
+  setChildWidth() {
+    // Need the width of the container to see how many components can fit inside of it.
     const cw = this._container.clientWidth;
-    // Minimum width of the images
+    // Minimum width of the components
     const mw = this.props.minWidth;
-    // Spacing between images, needs to take into account the border
+    // Spacing between components
     const margin = this.props.margin;
 
-    // We find the max number of min-width images that can fit in this row
-    // by dividing the container width by the min width, then we set the
-    // width of the images to something near that by dividing container width
-    // by the aforementioned quantity.
-    const size = (cw / Math.floor(cw / (mw + margin))) - margin;
+    // We find the max number of min-width components that can fit in this row
+    // by dividing the container width by the min width plus margin
+    // We have to take into account margin between items as well
+    const count = Math.floor(cw / (mw + margin));
+    // Then we set the width of the components to something near that by
+    // dividing container width by the aforementioned quantity.
+    const size = (cw / count) - margin;
 
-    // Set the dimensions for children of this instance of the image grid
+    // Be nice and kill margins on things that have nothing next to them
+    // If we have less than two items per row things get wierd
+    const nthChild = count > 1 ? `:nth-child(${count}n)` : ``;
+
+    // Set the dimensions for children of this instance of the component grid
     this._stylesheet.innerHTML = `
-      [data-instance-id=\"${this.state.id}\"] > * {
+      [data-instance-id=\"${this.state.id}\"] > .component-grid-item {
         width: ${size}px;
         height: ${size}px;
+        margin-right: ${margin}px;
+        margin-bottom: ${margin}px;
+      }
+      [data-instance-id=\"${this.state.id}\"] > .component-grid-item${nthChild} {
+        margin-right: 0px;
       }
     `;
   }
 
   componentDidMount() {
-    this.setImageWidth();
-    this.setImageWidth();
+    this.setChildWidth();
+    this.setChildWidth();
 
-    window.addEventListener("resize", this.setImageWidth, false);
+    window.addEventListener("resize", this.setChildWidth, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.setImageWidth, false);
+    window.removeEventListener("resize", this.setChildWidth, false);
   }
 
   componentDidUpdate() {
-    this.setImageWidth();
+    this.setChildWidth();
   }
 
   render() {
@@ -80,13 +92,16 @@ export default class ImageGrid extends React.Component {
     });
 
     return (
-      <div className={cx("image-grid image-grid-container", this.props.className)}>
-        <div className="image-grid-inner-container"
-             ref={(x) => {this._container = x}}
+      <div
+        className={cx("component-grid component-grid-container", this.props.className)}
+        ref={(x) => {this._container = x}}
+      >
+        <div className="component-grid-inner-container"
              data-instance-id={this.state.id}>
-          <style ref={(x) => {this._stylesheet = x}}></style>
           {children}
-          <div className="clear"></div>
+          <div className="clear">
+            <style ref={(x) => {this._stylesheet = x}}></style>
+          </div>
         </div>
       </div>
     );

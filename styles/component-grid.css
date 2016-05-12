@@ -1,7 +1,11 @@
-.image-grid .clear {
+.component-grid .clear {
   clear: both;
 }
 
-.image-grid {
-  border: 50px solid red;
+.component-grid .component-grid-inner-container {
+  display: inline-block;
+}
+
+.component-grid .component-grid-inner-container > .component-grid-item {
+  float: left;
 }
