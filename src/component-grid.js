@@ -4,6 +4,8 @@ import cx from "classnames";
 import {autobind} from "core-decorators";
 import styles from "../styles/component-grid.css";
 
+// Wrapper class so that we don't bork styles for components that
+// have been passed in
 class GridItem extends React.Component {
   render() {
     return (
@@ -25,11 +27,15 @@ export default class ComponentGrid extends React.Component {
     };
   }
 
+  // The component grid will keep all items above minWidth, growing
+  // and grow items into any available space after minWidth has been
+  // distributed.
   static propTypes = {
     margin: React.PropTypes.number,
     minWidth: React.PropTypes.number,
   };
 
+  // Arbitrary and project
   static defaultProps = {
     minWidth: 154,
     margin: 25,
@@ -39,7 +45,9 @@ export default class ComponentGrid extends React.Component {
   @autobind
   setChildWidth() {
     // Need the width of the container to see how many components can fit inside of it.
-    const cw = this._container.clientWidth;
+    // HACK: Magic numbers, ain't nothing to it, gangsta rap made me do it.
+    // (also rounding errors...)
+    const cw = Math.floor(this._container.clientWidth) - 1;
     // Minimum width of the components
     const mw = this.props.minWidth;
     // Spacing between components
@@ -48,10 +56,15 @@ export default class ComponentGrid extends React.Component {
     // We find the max number of min-width components that can fit in this row
     // by dividing the container width by the min width plus margin
     // We have to take into account margin between items as well
+    // Running it through Math.floor creates the "growing" effect when we size
+    // up the window.
     const count = Math.floor(cw / (mw + margin));
     // Then we set the width of the components to something near that by
     // dividing container width by the aforementioned quantity.
-    const size = (cw / count) - margin;
+    // We subtract margin since we factored it into count
+    // We end up with one extra margin width at the end of the row, so
+    // we divide it evenly amongst the items in the row (margin / count)
+    const size = ((cw / count) - margin) + (margin / count);
 
     // Be nice and kill margins on things that have nothing next to them
     // If we have less than two items per row things get wierd
@@ -65,6 +78,7 @@ export default class ComponentGrid extends React.Component {
         margin-right: ${margin}px;
         margin-bottom: ${margin}px;
       }
+
       [data-instance-id=\"${this.state.id}\"] > .component-grid-item${nthChild} {
         margin-right: 0px;
       }
@@ -73,15 +87,20 @@ export default class ComponentGrid extends React.Component {
 
   componentDidMount() {
     this.setChildWidth();
+    // HACK: Doesn't work right on the first render, count ends up being 0
     this.setChildWidth();
 
+    // Want to resize our images whenever the window resizes
     window.addEventListener("resize", this.setChildWidth, false);
   }
 
+  // Make sure to unbind the event listener, horrible magical things will start
+  // to happen if I don't.
   componentWillUnmount() {
     window.removeEventListener("resize", this.setChildWidth, false);
   }
 
+  // Handle re-render
   componentDidUpdate() {
     this.setChildWidth();
   }
