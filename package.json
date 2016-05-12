@@ -1,0 +1,32 @@
+{
+  "name": "responsive-component-grid",
+  "version": "0.1.0",
+  "description": "Grid component for ReactJS",
+  "private": true,
+  "main": "lib/component-grid.js",
+  "author": "bronter (gabe@launchbadge.com)",
+  "license": "UNLICENSED",
+  "scripts": {
+    "prepublish": "gulp build"
+  },
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-core": "^6.8.0",
+    "babel-plugin-transform-runtime": "^6.8.0",
+    "babel-preset-launchbadge-browser": "git://github.com/launchbadge/babel-preset-launchbadge-browser.git",
+    "babel-register": "^6.8.0",
+    "babel-runtime": "^6.6.1",
+    "eslint": "^2.9.0",
+    "eslint-config-launchbadge-browser": "git://github.com/launchbadge/eslint-config-launchbadge-browser.git",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-load-plugins": "^1.2.2",
+    "run-sequence": "^1.1.5"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "core-decorators": "^0.12.2",
+    "lodash": "^4.12.0",
+    "react": "^15.0.2"
+  }
+}

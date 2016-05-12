@@ -1,0 +1,11 @@
+.component-grid .clear {
+  clear: both;
+}
+
+.component-grid .component-grid-inner-container {
+  display: inline-block;
+}
+
+.component-grid .component-grid-inner-container > .component-grid-item {
+  float: left;
+}
