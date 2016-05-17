@@ -1,8 +1,8 @@
 {
   "name": "responsive-component-grid",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Grid component for ReactJS",
-  "private": true,
+  "private": false,
   "main": "lib/component-grid.js",
   "author": "bronter (gabe@launchbadge.com)",
   "license": "UNLICENSED",
