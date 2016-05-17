@@ -5,7 +5,7 @@
   "private": false,
   "main": "lib/component-grid.js",
   "author": "bronter (gabe@launchbadge.com)",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prepublish": "gulp build"
   },
