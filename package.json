@@ -9,6 +9,13 @@
   "scripts": {
     "prepublish": "gulp build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bronter/responsive-component-grid.git"
+  },
+  "keywords": [
+    "grid"
+  ],
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.8.0",
