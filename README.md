@@ -22,3 +22,5 @@ Usage
   <img src="http://lorempixel.com/g/200/200?aoeu=9" />
 </ComponentGrid>
 ```
+
+*This repository is no longer maintained and will be archived; CSS has much better ways to do this nowadays*
